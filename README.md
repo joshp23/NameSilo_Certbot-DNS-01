@@ -4,7 +4,11 @@ Autorenew LetsEncrypt wildcard certificates with Certbot DNS-01 on NameSilo DNS
 This will add or renew the ACME DNS challenge record at NameSilo. 
 
 ### Using this script
-Just add your NameSilo API key to at the top of the script, create a writable `tmp` folder in the directory that this file is in and call the file with Certbot.
+Make sure that you have xmllint installed on your system. On Ubuntu just:
+```
+ $ apt-get install libxml2-utils
+ ```
+Then add your NameSilo API key to at the top of the script, create a writable `tmp` folder in the directory that this file is in, and call the file with Certbot.
 
 There are two ways to call this script with Certbot:
 1.  Call certbot using something like the following command

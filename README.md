@@ -1,9 +1,12 @@
 # NameSilo_Certbot-DNS-01
 Autorenew LetsEncrypt wildcard certificates with Certbot DNS-01 on NameSilo DNS
 
-This will add or renew the DNS challenge record. There is a 15 minute wait for propogation.
+This will add or renew the ACME DNS challenge record at NameSilo. 
 
-There are two ways to use this:
+### Using this script
+Just add your NameSilo API key to at the top of the script, create a writable `tmp` folder in the directory that this file is in and call the file with Certbot.
+
+There are two ways to call this script with Certbot:
 1.  Call certbot using something like the following command
 ```
 $ certbot renew -- manual-auth-hook /path/to/hook.sh
@@ -12,6 +15,7 @@ $ certbot renew -- manual-auth-hook /path/to/hook.sh
 ```
 manual_auth_hook = /path/to/hook.sh
 ```
+### For berevity
 The domain renewal options tested with this hook auth are the following:
 ```
 # Options used in the renewal process
@@ -26,3 +30,4 @@ authenticator = manual
 manual_auth_hook = /path/to/hook.sh
 ```
 This auth hook has not been tested for renewing specific subdomains, only wildcards.
+#### Note: There is a 15 minute wait for DNS propogation.

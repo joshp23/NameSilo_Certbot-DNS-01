@@ -1,5 +1,5 @@
 #!/bin/bash
-# NameSileCertbot-DNS-01 0.2.0
+# NameSileCertbot-DNS-01 0.2.1
 ## https://stackoverflow.com/questions/59895
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE"  ]; do
@@ -36,10 +36,17 @@ then
 			done
 			;;
 	   280)
+		RESPONSE_DETAIL=`xmllint --xpath "//namesilo/reply/detail/text()"  $RESPONSE`
 		echo "Update aborted, please check your NameSilo account."
+		echo "Domain: $DOMAIN"
+		echo "rrid: $RECORD_ID"
+		echo "reason: $RESPONSE_DETAIL"
 			;;
 	   *)
-		echo "No valid response from Namesilo"
+		echo "Namesilo returned code: $RESPONSE_CODE"
+		echo "Reason: $RESPONSE_DETAIL"
+		echo "Domain: $DOMAIN"
+		echo "rrid: $RECORD_ID"
 			;;
 	esac
 else
@@ -57,10 +64,19 @@ else
 			done
 			;;
 	   280)
+
+		RESPONSE_DETAIL=`xmllint --xpath "//namesilo/reply/detail/text()"  $RESPONSE`
 		echo "DNS addition aborted, please check your NameSilo account."
+		echo "Domain: $DOMAIN"
+		echo "rrid: $RECORD_ID"
+		echo "reason: $RESPONSE_DETAIL"
 			;;
 	   *)
-		echo "No valid response from Namesilo"
+		RESPONSE_DETAIL=`xmllint --xpath "//namesilo/reply/detail/text()"  $RESPONSE`
+		echo "Namesilo returned code: $RESPONSE_CODE"
+		echo "Reason: $RESPONSE_DETAIL"
+		echo "Domain: $DOMAIN"
+		echo "rrid: $RECORD_ID"
 			;;
 	esac
 fi

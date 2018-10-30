@@ -1,5 +1,5 @@
 #!/bin/bash
-# NameSileCertbot-DNS-01 0.2.0
+# NameSileCertbot-DNS-01 0.2.1
 ## https://stackoverflow.com/questions/59895
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE"  ]; do
@@ -13,11 +13,8 @@ cd ${DIR}
 source config.sh
 
 DOMAIN=${CERTBOT_DOMAIN}
-VALIDATION=${CERTBOT_VALIDATION}
-
-if [ ! -f $CACHE$DOMAIN.xml ] ; then
-	curl -s "https://www.namesilo.com/api/dnsListRecords?version=1&type=xml&key=$APIKEY&domain=$DOMAIN" > $CACHE$DOMAIN.xml
-fi
+## Get current list (updating may alter rrid, etc)
+curl -s "https://www.namesilo.com/api/dnsListRecords?version=1&type=xml&key=$APIKEY&domain=$DOMAIN" > $CACHE$DOMAIN.xml
 ## Check for existing ACME record
 if grep -q "_acme-challenge" $CACHE$DOMAIN.xml ; then
 	## Get record ID
@@ -31,10 +28,18 @@ if grep -q "_acme-challenge" $CACHE$DOMAIN.xml ; then
 			echo "ACME challenge record successfully removed"
 			;;
 	   280)
-		echo "Record removal failed, please check your NameSilo account."
+		RESPONSE_DETAIL=`xmllint --xpath "//namesilo/reply/detail/text()"  $RESPONSE`
+		echo "Record removal failed."
+		echo "Domain: $DOMAIN"
+		echo "rrid: $RECORD_ID"
+		echo "reason: $RESPONSE_DETAIL"
 			;;
 	   *)
-		echo "No valid response from Namesilo"
+		RESPONSE_DETAIL=`xmllint --xpath "//namesilo/reply/detail/text()"  $RESPONSE`
+		echo "Namesilo returned code: $RESPONSE_CODE"
+		echo "Reason: $RESPONSE_DETAIL"
+		echo "Domain: $DOMAIN"
+		echo "rrid: $RECORD_ID"
 			;;
 	esac
 fi

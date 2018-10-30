@@ -26,6 +26,8 @@ $ certbot renew -- manual-auth-hook /path/to/hook.sh -- manual-cleanup-hook /pat
 ```
 #### Note: There is a 15 minute wait for DNS propagation.
 
+Debug data will be printed in case of error response from NameSilo.
+
 ### Support Dev
 All of my published code is developed and maintained in spare time, if you would like to support development of this, or any of my published code, I have set up a Liberpay account for just this purpose. Thank you.
 

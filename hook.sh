@@ -1,11 +1,5 @@
 #!/bin/bash
-## APIKEY obtained from Namesilo:
-APIKEY="YOUR_KEY_HERE"
-CACHE="tmp/"
-RESPONSE="tmp/namesilo_response.xml"
-
-## DO NOT EDIT BELOW THIS LINE ##
-
+# NameSileCertbot-DNS-01 0.2.0
 ## https://stackoverflow.com/questions/59895
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE"  ]; do
@@ -14,12 +8,13 @@ while [ -h "$SOURCE"  ]; do
   [[ $SOURCE != /*  ]] && SOURCE="$DIR/$SOURCE"
 done
 DIR="$( cd -P "$( dirname "$SOURCE"  )" && pwd  )"
-
 echo "Recieved request for" "${CERTBOT_DOMAIN}"
 cd ${DIR}
+source config.sh
 
 DOMAIN=${CERTBOT_DOMAIN}
 VALIDATION=${CERTBOT_VALIDATION}
+
 ## Get the XML & record ID
 curl -s "https://www.namesilo.com/api/dnsListRecords?version=1&type=xml&key=$APIKEY&domain=$DOMAIN" > $CACHE$DOMAIN.xml
 ## Check for existing ACME record

@@ -1,40 +1,30 @@
 # NameSilo_Certbot-DNS-01
-Autorenew LetsEncrypt wildcard certificates with Certbot DNS-01 on NameSilo DNS
+Hook script helpers for obtaining [LetsEncrypt](https://letsencrypt.org/) certificates, using [Certbot](https://certbot.eff.org/) with [manual](https://certbot.eff.org/docs/using.html#manual) DNS-01 validation against [NameSilo](https://www.namesilo.com/) DNS.
 
-This will add or renew the ACME DNS challenge record at NameSilo. 
-
-### Using this script
-Make sure that you have xmllint installed on your system. On Ubuntu just:
+#### Dependency
+Make sure that you have xmllint installed on your system. On Ubuntu:
 ```
  $ apt-get install libxml2-utils
- ```
-Then add your NameSilo API key to at the top of the script, create a writable `tmp` folder in the directory that this file is in, and call the file with Certbot.
+```
+#### Example Setup
+Add your NameSilo API key to at the top of `config.sh` and create a writable `tmp` folder in the directory that this file is in.  
 
-There are two ways to call this script with Certbot:
-1.  Call certbot using something like the following command
+To make this the default setting for Certbot, add the following to your Certbot config at `/etc/letsencrypt/cli.ini`
+
 ```
-$ certbot renew -- manual-auth-hook /path/to/hook.sh
-```
-2.  add the following to either your Certbot config, or a specific domain renewal config in `/etc/Letsencrypt/renewal/domain.com.conf`
-```
-manual_auth_hook = /path/to/hook.sh
-```
-### For berevity
-The domain renewal options tested with this hook auth are the following:
-```
-# Options used in the renewal process
-[renewalparams]
 server = https://acme-v02.api.letsencrypt.org/directory
-rsa_key_size = 4096
-pref_challs = dns-01,
-manual_public_ip_logging_ok = True
-account = YOUR_ACCOUNT_STRING
-installer = None
 authenticator = manual
+preferred-challenges = dns-01sh
 manual_auth_hook = /path/to/hook.sh
+manual-cleanup-hook /path/to/cleanup.sh
 ```
-This auth hook has not been tested for renewing specific subdomains, only wildcards.
-#### Note: There is a 15 minute wait for DNS propogation.
+Note: The server above **must** be set for DNS validation.  
+
+Another option is to just add the hook scripts along with any other options when calling Certbot like so:
+```
+$ certbot renew -- manual-auth-hook /path/to/hook.sh -- manual-cleanup-hook /path/to/cleanup.sh
+```
+#### Note: There is a 15 minute wait for DNS propagation.
 
 ### Support Dev
 All of my published code is developed and maintained in spare time, if you would like to support development of this, or any of my published code, I have set up a Liberpay account for just this purpose. Thank you.

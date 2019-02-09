@@ -14,7 +14,7 @@ To make this the default setting for Certbot, add the following to your Certbot 
 ```
 server = https://acme-v02.api.letsencrypt.org/directory
 authenticator = manual
-preferred-challenges = dns-01sh
+preferred-challenges = dns-01
 manual_auth_hook = /path/to/hook.sh
 manual-cleanup-hook /path/to/cleanup.sh
 ```

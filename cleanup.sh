@@ -1,5 +1,5 @@
 #!/bin/bash
-# NameSileCertbot-DNS-01 0.2.1
+# NameSileCertbot-DNS-01 0.2.2
 ## https://stackoverflow.com/questions/59895
 SOURCE="${BASH_SOURCE[0]}"
 while [ -h "$SOURCE"  ]; do

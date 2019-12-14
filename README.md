@@ -22,7 +22,7 @@ Note: The server above **must** be set for DNS validation.
 
 Another option is to just add the hook scripts along with any other options when calling Certbot like so:
 ```
-$ certbot renew -- manual-auth-hook /path/to/hook.sh -- manual-cleanup-hook /path/to/cleanup.sh
+$ certbot renew --manual-auth-hook /path/to/hook.sh --manual-cleanup-hook /path/to/cleanup.sh
 ```
 #### Note: There is a 15 minute wait for DNS propagation.
 
